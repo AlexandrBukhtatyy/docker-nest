@@ -1,11 +1,11 @@
-import { Controller, Get } from "@nestjs/common";
-import { CoreService } from "./core.service";
+import { Controller, Get } from '@nestjs/common';
+import { CoreService } from './core.service';
 
-@Controller('core')
+@Controller('/core')
 export class CoreController {
   constructor(private coreService: CoreService) {}
 
-  @Get('version')
+  @Get('/version')
   getHello(): string {
     return this.coreService.getVersion();
   }
