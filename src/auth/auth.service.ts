@@ -13,7 +13,12 @@ export class AuthService {
   ) {}
 
   async login(dto: CreateUserDto) {
-
+    const user = await this.userService.getUserByEmail(dto.email);
+    if (!user) {
+      throw new HttpException('Пользователь с таким email не существует', HttpStatus.BAD_REQUEST);
+    }
+    const token = this.generateToken(user);
+    return token;
   }
 
   async registration(dto: CreateUserDto) {
@@ -24,7 +29,6 @@ export class AuthService {
     const hashPassword = await bcrypt.hash(dto.password, 5);
     const user = await this.userService.create({...dto, password: hashPassword});
     const token = this.generateToken(user);
-    console.log('token: ', token);
     return token;
   }
 
