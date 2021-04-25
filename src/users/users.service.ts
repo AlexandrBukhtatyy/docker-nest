@@ -1,9 +1,9 @@
-import { Injectable } from "@nestjs/common";
-import { User } from "./user.model";
-import { InjectModel } from "@nestjs/sequelize";
-import { CreateUserDto } from "./dto/create-user.dto";
-import { UpdateUserDto } from "./dto/update-user.dto";
-import { RolesService } from "../roles/roles.service";
+import { Injectable } from '@nestjs/common';
+import { User } from './models/user.model';
+import { InjectModel } from '@nestjs/sequelize';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { RolesService } from '../roles/roles.service';
 
 @Injectable()
 export class UsersService {
@@ -23,7 +23,7 @@ export class UsersService {
 
   async create(dto: CreateUserDto) {
     const user = await this.userRepository.create(dto);
-    const role = await this.rolesService.getRoleByName('USER');
+    const role = await this.rolesService.getRoleByValue('ADMIN');
     await user.$set('roles', [role.id]);
     return user;
   }
@@ -40,7 +40,10 @@ export class UsersService {
   // }
 
   async getUserByEmail(email: string) {
-    const user = await this.userRepository.findOne({where: {email}, include: {all: true}});
+    const user = await this.userRepository.findOne({
+      where: { email },
+      include: { all: true },
+    });
     return user;
   }
 }

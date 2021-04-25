@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRoleDto } from "./dto/create-role.dto";
-import { InjectModel } from "@nestjs/sequelize";
-import { Role } from "./role.model";
+import { CreateRoleDto } from './dto/create-role.dto';
+import { InjectModel } from '@nestjs/sequelize';
+import { Role } from './models/role.model';
 
 @Injectable()
 export class RolesService {
@@ -17,8 +17,8 @@ export class RolesService {
     return role;
   }
 
-  async getRoleByName(name: string) {
-    const role = await this.roleRepository.findOne({ where: { role: name } });
+  async getRoleByValue(value: string) {
+    const role = await this.roleRepository.findOne({ where: { value } });
     return role;
   }
 }
