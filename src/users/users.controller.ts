@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { User } from "./user.model";
 import { UpdateUserDto } from "./dto/update-user.dto";
+import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 
 @ApiTags('Пользователи')
 @Controller('users')
@@ -12,6 +13,7 @@ export class UsersController {
 
   @ApiOperation({summary: 'Получение списка пользователей'})
   @ApiResponse({status: 200, type: [User]})
+  @UseGuards(JwtAuthGuard)
   @Get('')
   public getUsers() {
     return this.usersService.getAll();
