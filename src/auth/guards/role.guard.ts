@@ -17,7 +17,7 @@ export class RoleGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     try {
-      const requiredRoles = this.reflector.getAllAndOverride(ROLES_KEY, [
+      const requiredRoles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
         context.getHandler(),
         context.getClass()
       ]);
@@ -37,7 +37,7 @@ export class RoleGuard implements CanActivate {
       const user = this.jwtService.verify(token);
       request.user = user;
 
-      return user.roles.some(role => requiredRoles.include(role.value));
+      return user.roles.some(role => requiredRoles.includes(role.value));
     } catch (e) {
       throw new HttpException('Пользователь не имеет прав', HttpStatus.FORBIDDEN);
     }
